@@ -12,7 +12,6 @@ namespace NetcodeDemo
         ThirdPersonController m_ThirdPersonController;
         [SerializeField]
         PlayerInput m_PlayerInput;
-        Transform m_CameraFollow;
 
         private void Awake()
         {
