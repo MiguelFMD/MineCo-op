@@ -12,6 +12,9 @@ namespace NetcodeDemo
         ThirdPersonController m_ThirdPersonController;
         [SerializeField]
         PlayerInput m_PlayerInput;
+        [Header("Cinemachine")]
+        [Tooltip("The follow target set in the Cinemachine Virtual Camera that the camera will follow")]
+        public GameObject CinemachineCameraTarget;
 
         private void Awake()
         {
@@ -32,6 +35,13 @@ namespace NetcodeDemo
                 m_CharacterController.enabled = false;
                 m_ThirdPersonController.enabled = false;
                 return;
+            }
+
+            GameObject virtualCameraObject = GameObject.Find("PlayerFollowCamera");
+            if(virtualCameraObject != null)
+            {
+                var vCam3 = virtualCameraObject.GetComponent<Unity.Cinemachine.CinemachineCamera>();
+                if (vCam3 != null) vCam3.Follow = CinemachineCameraTarget.transform;
             }
 
             // Enable if this is an owner
