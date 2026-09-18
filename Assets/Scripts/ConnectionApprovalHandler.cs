@@ -1,5 +1,6 @@
 using UnityEngine;
 using Unity.Netcode;
+using Unity.VisualScripting;
 
 /// <summary>
 /// Connection Approval Handler Component
@@ -11,6 +12,9 @@ using Unity.Netcode;
 public class ConnectionApprovalHandler : MonoBehaviour
 {
     private NetworkManager m_NetworkManager;
+    [SerializeField]
+    private int maxPlayers = 2;
+    private int currentPlayers = 0;
 
     private void Start()
     {
@@ -23,11 +27,6 @@ public class ConnectionApprovalHandler : MonoBehaviour
         }
     }
 
-    private void Setup()
-    {
-        m_NetworkManager.StartHost();
-    }
-
     private void ApprovalCheck(NetworkManager.ConnectionApprovalRequest request, NetworkManager.ConnectionApprovalResponse response)
     {
         // The client identifier to be authenticated
@@ -37,7 +36,14 @@ public class ConnectionApprovalHandler : MonoBehaviour
         var connectionData = request.Payload;
 
         // Your approval logic determines the following values
-        response.Approved = true;
+        if(maxPlayers > currentPlayers)
+        {
+            response.Approved = true;
+            currentPlayers++;
+        }
+        else
+            response.Approved = false;
+        
         response.CreatePlayerObject = true;
 
         // The Prefab hash value of the NetworkPrefab, if null the default NetworkManager player Prefab is used
@@ -51,7 +57,7 @@ public class ConnectionApprovalHandler : MonoBehaviour
 
         // If response.Approved is false, you can provide a message that explains the reason why via ConnectionApprovalResponse.Reason
         // On the client-side, NetworkManager.DisconnectReason will be populated with this message via DisconnectReasonMessage
-        response.Reason = "Some reason for not approving the client";
+        response.Reason = "The room is full";
 
         // If additional approval steps are needed, set this to true until the additional steps are complete
         // once it transitions from true to false the connection approval response will be processed.

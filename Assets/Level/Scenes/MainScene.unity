@@ -1704,6 +1704,7 @@ GameObject:
   - component: {fileID: 1851203782}
   - component: {fileID: 1851203781}
   - component: {fileID: 1851203784}
+  - component: {fileID: 1851203785}
   m_Layer: 0
   m_Name: NetworkManager
   m_TagString: Untagged
@@ -1812,6 +1813,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 55b0818b82f3a654b92a451b7311a75d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::UIStartButtons
+--- !u!114 &1851203785
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1851203780}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8454a43b686016c4ba3b832a1b14b91b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ConnectionApprovalHandler
 --- !u!1001 &2026142216
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2273,8 +2286,8 @@ SceneRoots:
   - {fileID: 2114283753834967213}
   - {fileID: 8345070700268369567}
   - {fileID: 1221041499}
+  - {fileID: 2026142216}
   - {fileID: 746329221}
   - {fileID: 5226203432431967431}
   - {fileID: 1851203783}
   - {fileID: 976118849}
-  - {fileID: 2026142216}
