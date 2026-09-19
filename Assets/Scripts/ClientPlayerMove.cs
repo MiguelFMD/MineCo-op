@@ -57,7 +57,7 @@ namespace NetcodeDemo
             // When local client finishes loading the scene
             if (sceneEvent.SceneEventType == SceneEventType.LoadComplete && sceneEvent.ClientId == NetworkManager.Singleton.LocalClientId)
             {
-                if (sceneEvent.SceneName == GameSceneName) // El nombre de tu escena de juego
+                if (sceneEvent.SceneName == GameSceneName)
                 {
                     enabled = IsClient; // Enable if this is a client.
                     if (!IsOwner)
