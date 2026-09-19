@@ -1,6 +1,5 @@
 using UnityEngine;
 using Unity.Netcode;
-using Unity.VisualScripting;
 
 /// <summary>
 /// Connection Approval Handler Component
