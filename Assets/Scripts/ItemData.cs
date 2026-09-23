@@ -5,6 +5,6 @@ public class ItemData : ScriptableObject
 {
     public uint ItemID;
     public string ItemName;
-    public string Icon;
-    public int MaxStack;
+    public Mesh mesh;
+    public Material material;
 }

@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 1027825943767206560}
   - component: {fileID: 6188632162521199799}
   m_Layer: 0
-  m_Name: Collectable
+  m_Name: CollectableItem
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -126,7 +126,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Unity.Netcode.Runtime::Unity.Netcode.NetworkObject
-  GlobalObjectIdHash: 1975018894
+  GlobalObjectIdHash: 3282568391
   InScenePlacedSourceGlobalObjectIdHash: 0
   m_InScenePlacedDisabledByDefault: 0
   DeferredDespawnTick: 0
@@ -154,10 +154,5 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Collectable
   ShowTopMostFoldoutHeaderGroup: 1
-  m_NetworkColor:
-    UpdateTraits:
-      MinSecondsBetweenUpdates: 0
-      MaxSecondsBetweenUpdates: 0
-    m_InternalValue: {r: 1, g: 1, b: 1, a: 1}
   itemData: {fileID: 11400000, guid: a6db01e1232b4ba47bce634cde9f3738, type: 2}
   amount: 1
