@@ -1,16 +1,15 @@
+using Unity.Netcode;
 using UnityEngine;
 
-public class DamagerComponent : MonoBehaviour
+public class DamagerComponent : NetworkBehaviour
 {
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
-    {
-        
-    }
+    [SerializeField] private float damageAmount;
 
-    // Update is called once per frame
-    void Update()
+    public void Damage(NetworkObject objetive)
     {
-        
+        if(objetive.TryGetComponent(out HealthComponent healthComponent))
+        {
+            healthComponent.AddHealth(-damageAmount);
+        }
     }
 }
