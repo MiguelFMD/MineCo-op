@@ -18,8 +18,8 @@ public class CollectableItem : NetworkBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if(!IsServer) return;
-
+        if(!IsClient) return;
+        
         if(other.TryGetComponent(out PlayerInventory inventory))
         {
            
