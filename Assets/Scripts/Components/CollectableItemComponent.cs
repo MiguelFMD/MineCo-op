@@ -1,6 +1,6 @@
 using UnityEngine;
 using Unity.Netcode;
-public class CollectableItem : NetworkBehaviour
+public class CollectableItemComponent : NetworkBehaviour
 {
     [SerializeField] private ItemData itemData;
     [SerializeField] private int amount;
