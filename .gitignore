@@ -107,5 +107,5 @@ InitTestScene*.unity*
 /[Aa]ssets/[Ii]nit[Tt]est[Ss]cene*.unity*
 
 # Ignore students files
-Assets/ClassResources/
+Assets/Students
 MineCo-op.slnx
