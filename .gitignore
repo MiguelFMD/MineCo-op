@@ -108,4 +108,5 @@ InitTestScene*.unity*
 
 # Ignore students files
 Assets/Students
+Assets/Students.meta
 MineCo-op.slnx
