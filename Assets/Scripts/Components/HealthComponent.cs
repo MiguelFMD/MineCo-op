@@ -27,7 +27,7 @@ public class HealthComponent : NetworkBehaviour
         {
             EventManager.OnPlayerDied?.Invoke(NetworkObjectId);
         }
-        EventManager.OnHealthChanged?.Invoke(NetworkObjectId, currentHealth.Value);
+        EventManager.OnHealthChanged?.Invoke(NetworkObjectId, currentHealth.Value, maxHealth);
     }
     
     /// <summary>

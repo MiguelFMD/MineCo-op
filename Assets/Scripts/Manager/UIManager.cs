@@ -7,10 +7,16 @@ public class UIManager : MonoBehaviour
 {
     [SerializeField] private Image healthbar_1;
     [SerializeField] private Image healthbar_2;
+    private Material healthBarMaterial_1;
+    private Material healthBarMaterial_2;
     void Start()
     {
         EventManager.OnHealthChanged += ChangeHealthBars;
         EventManager.OnPlayerDied += ShowDeathScreen;
+        healthBarMaterial_1 = new Material(healthbar_1.material);
+        healthbar_1.material = healthBarMaterial_1;
+        healthBarMaterial_2 = new Material(healthbar_2.material);
+        healthbar_2.material = healthBarMaterial_2;
     }
 
     void OnDestroy()
@@ -19,18 +25,16 @@ public class UIManager : MonoBehaviour
         EventManager.OnPlayerDied -= ShowDeathScreen;
     }
 
-    private void ChangeHealthBars(ulong playerId, float value)
+    private void ChangeHealthBars(ulong playerId, float value, float maxValue)
     {
-        
+        float healthNormalized = value / maxValue;
         if(playerId % 2 == 0)
         {
-            print("Cambiando la vida de player 1");
-            healthbar_1.fillAmount = 0.5f;
+            healthBarMaterial_2.SetFloat("_Health", healthNormalized);
         }
         else
         {
-            print("Cambiando la vida de player 2");
-            healthbar_2.fillAmount = 0.5f;
+            healthBarMaterial_1.SetFloat("_Health", healthNormalized);
         }
     }
 
