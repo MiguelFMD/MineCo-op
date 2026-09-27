@@ -17,8 +17,8 @@ public class TriggerDamageComponent : NetworkBehaviour
     }
     private void OnTriggerEnter(Collider other)
     {
-        if(!IsClient) return;
-        if(other.TryGetComponent(out NetworkObject networkObject) && networkObject.IsOwner)
+        if(!IsServer) return;
+        if(other.TryGetComponent(out NetworkObject networkObject))
         {
             damagerComponent.Damage(networkObject);
         }
