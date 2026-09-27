@@ -22,6 +22,7 @@ namespace NetcodeDemo
             m_PlayerInput.enabled = false;
             m_ThirdPersonController.enabled = false;
             m_CharacterController.enabled = false;
+            CinemachineCameraTarget.SetActive(false);
         }
 
         public override void OnNetworkSpawn()
@@ -92,12 +93,14 @@ namespace NetcodeDemo
                 m_PlayerInput.enabled = false;
                 m_CharacterController.enabled = false;
                 m_ThirdPersonController.enabled = false;
+                CinemachineCameraTarget.SetActive(false);
             }
             else
             {
                 m_PlayerInput.enabled = true;
                 m_CharacterController.enabled = true;
                 m_ThirdPersonController.enabled = true;
+                CinemachineCameraTarget.SetActive(true);
             }
         }
     }

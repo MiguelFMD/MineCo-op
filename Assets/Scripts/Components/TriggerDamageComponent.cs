@@ -17,9 +17,10 @@ public class TriggerDamageComponent : NetworkBehaviour
     }
     private void OnTriggerEnter(Collider other)
     {
-        if(!IsServer) return;
+        if(!IsClient) return;
         if(other.TryGetComponent(out NetworkObject networkObject))
         {
+            print("Se chocado: " + networkObject.name);
             damagerComponent.Damage(networkObject);
         }
     }

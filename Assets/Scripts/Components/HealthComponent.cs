@@ -9,9 +9,11 @@ public class HealthComponent : NetworkBehaviour
 
     public override void OnNetworkSpawn()
     {
+        if(IsServer)
+        {
+            currentHealth.Value = maxHealth;
+        }
         currentHealth.OnValueChanged += OnHealthChanged;
-        if(!IsServer) return;
-        currentHealth.Value = maxHealth;
     }
 
     public override void OnNetworkDespawn()
@@ -34,7 +36,13 @@ public class HealthComponent : NetworkBehaviour
     /// <param name="points">The amount of health to be added to the current health. It can be a negative value.</param>
     public void AddHealth(float points)
     {
-        if(!IsServer) return; //Make sure only affects the player owner.
+        ChangeHealthServerRpc(points);
+    }
+
+    [Rpc(SendTo.Server)]
+    private void ChangeHealthServerRpc(float points)
+    {
         currentHealth.Value = Math.Clamp(currentHealth.Value + points, 0, maxHealth);
+        print(this.name + "se quita vida");
     }
 }
