@@ -1,15 +1,13 @@
-using System.Threading.Tasks;
 using TMPro;
 using Unity.Netcode;
-using Unity.VisualScripting;
 using UnityEngine;
-using UnityEngine.Apple.ReplayKit;
 using UnityEngine.UI;
 
 public class LobbyUI : MonoBehaviour
 {
     [Header("Relay")]
     [SerializeField] RelayManager relayManager;
+    [SerializeField] string connectionType = "wss";
     [Header ("UI")]
     [SerializeField] GameObject initButtons;
     [SerializeField] GameObject joinButtons;
@@ -43,7 +41,7 @@ public class LobbyUI : MonoBehaviour
             hostButton.enabled = false;
             initButtons.SetActive(false);
             int maxPlayers = NetworkManager.Singleton.GetComponent<ConnectionApprovalHandler>().maxPlayers;
-            await relayManager.StartHostWithRelay(maxPlayers, "udp");
+            await relayManager.StartHostWithRelay(maxPlayers, connectionType);
         }
         catch (System.Exception e)
         {
@@ -62,7 +60,7 @@ public class LobbyUI : MonoBehaviour
             joinButtons.SetActive(false);
             string cleanCode = hostCode.text.Trim().Replace("\u200B", "");
             Debug.Log($"Intentando conectar con código puro: '{cleanCode}' | Longitud: {cleanCode.Length}");
-            await relayManager.StartClientWithRelay(cleanCode, "udp");
+            await relayManager.StartClientWithRelay(cleanCode, connectionType);
         }
         catch (System.Exception e)
         {

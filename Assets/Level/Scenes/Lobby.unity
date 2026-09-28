@@ -3793,6 +3793,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 78009050}
     - target: {fileID: 6705978000179041194, guid: e2e6ec273ddd79943bb4513658d4fbc0, type: 3}
+      propertyPath: connectionType
+      value: wss
+      objectReference: {fileID: 0}
+    - target: {fileID: 6705978000179041194, guid: e2e6ec273ddd79943bb4513658d4fbc0, type: 3}
       propertyPath: joinPartyButton
       value: 
       objectReference: {fileID: 461281797}
@@ -4018,6 +4022,10 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6988956082553100768, guid: 9c4aa35040bd8c54884018abc1144baf, type: 3}
       propertyPath: m_ProtocolType
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6988956082553100768, guid: 9c4aa35040bd8c54884018abc1144baf, type: 3}
+      propertyPath: m_UseWebSockets
       value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents:
