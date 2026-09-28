@@ -6,7 +6,6 @@ using Unity.Netcode;
 /// </summary>
 /// <remarks>
 /// This should be placed on the same GameObject as the NetworkManager.
-/// It automatically declines the client connection for example purposes.
 /// </remarks>
 public class ConnectionApprovalHandler : MonoBehaviour
 {
