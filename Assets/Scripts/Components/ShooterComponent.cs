@@ -1,9 +1,12 @@
+using System;
 using Unity.Netcode;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
 public class ShooterComponent : NetworkBehaviour
 {
+    [SerializeField]
+    private Transform spawnTransform;
     public override void OnNetworkSpawn()
     {
         if (!IsOwner)
@@ -15,7 +18,7 @@ public class ShooterComponent : NetworkBehaviour
     {
         if(Keyboard.current.tKey.wasPressedThisFrame)
         {
-            ShootServerRpc(this.transform.position, Quaternion.identity);
+            ShootServerRpc(spawnTransform.position, spawnTransform.rotation);
         }
     }
 
