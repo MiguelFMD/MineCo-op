@@ -4,7 +4,6 @@ using UnityEngine;
 public class PlayerInventory : NetworkBehaviour
 {
     public NetworkList<NetworkItem> Inventory;
-    //
     [SerializeField, Tooltip("Add all the items that the player can pick up.")] private ItemData[] itemDatabase;
     private void Awake()
     {

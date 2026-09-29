@@ -1,14 +1,17 @@
 using UnityEngine;
 using Unity.Netcode;
+[RequireComponent (typeof(Collider))]
 public class CollectableItemComponent : NetworkBehaviour
 {
     [SerializeField] private ItemData itemData;
     [SerializeField] private int amount;
+    private Collider colliderComponent;
 
     public override void OnNetworkSpawn()
     {
         base.OnNetworkSpawn();
         AssignData();
+        colliderComponent.isTrigger = true;
     }
     public override void OnNetworkDespawn()
     {
