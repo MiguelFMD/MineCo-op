@@ -6,13 +6,11 @@ using Unity.Netcode;
 /// </summary>
 /// <remarks>
 /// This should be placed on the same GameObject as the NetworkManager.
-/// It automatically declines the client connection for example purposes.
 /// </remarks>
 public class ConnectionApprovalHandler : MonoBehaviour
 {
     private NetworkManager m_NetworkManager;
-    [SerializeField]
-    private int maxPlayers = 2;
+    public int maxPlayers = 2;
     private int currentPlayers = 0;
 
     private void Start()
