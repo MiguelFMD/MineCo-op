@@ -54,6 +54,7 @@ GameObject:
   - component: {fileID: 6752595006100232571}
   - component: {fileID: 9165924284520693627}
   - component: {fileID: 6695570043266333485}
+  - component: {fileID: -6436090963111591265}
   m_Layer: 8
   m_Name: PlayerArmature_Networked
   m_TagString: Player
@@ -482,6 +483,19 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::ShooterComponent
   ShowTopMostFoldoutHeaderGroup: 1
   spawnTransform: {fileID: 6019980061048790776}
+--- !u!114 &-6436090963111591265
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 236083593460845340}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 22703b51055701f40bb004d22496e19c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PlayerTeleportHandler
+  ShowTopMostFoldoutHeaderGroup: 1
 --- !u!1 &593485570898511240
 GameObject:
   m_ObjectHideFlags: 0
