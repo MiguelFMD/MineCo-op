@@ -1,3 +1,4 @@
+using System.Threading.Tasks;
 using Unity.Netcode;
 using UnityEngine;
 
@@ -20,6 +21,8 @@ public class PlayerInventory : NetworkBehaviour
         };
         
         Inventory.Add(newItem);
+        
+        EventManager.OnItemPickUp?.Invoke(newItem);//<----NEW LINE
         
         if(NetworkManager.Singleton.SpawnManager.SpawnedObjects.TryGetValue(networkObjectId, out NetworkObject itemToDespawn))
         {

@@ -27,6 +27,11 @@ public class CloudSaveSample : MonoBehaviour
             SparklingInt = 1337,
             SophisticatedString = "hi there!"
         };
+
+        NetworkItem item = new NetworkItem
+        {
+            
+        };
         string writeLock = await ForceSaveObjectData("object_key", firstSample);
         SampleObject incomingSample = await RetrieveSpecificData<SampleObject>("object_key");
         Debug.Log($"Loaded sample object: {incomingSample.AmazingFloat}, {incomingSample.SparklingInt}, {incomingSample.SophisticatedString}, write lock {writeLock}");

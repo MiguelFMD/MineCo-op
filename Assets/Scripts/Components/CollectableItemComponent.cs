@@ -41,6 +41,7 @@ public class CollectableItemComponent : NetworkBehaviour
             if(TryGetComponent(out MeshRenderer meshRenderer))
                 meshRenderer.material = itemData.material;
             
+            colliderComponent = GetComponent<BoxCollider>();
             //Probably there should be a collider data also in order the manage the mesh proportions and the corresponding collider
             
             gameObject.name = itemData.name;
