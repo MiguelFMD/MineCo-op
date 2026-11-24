@@ -20,7 +20,7 @@ public class CloudSaveManager : MonoBehaviour
 
     private async void SaveItem(NetworkItem item)
     {
-        await ForceSaveObjectData("item", item);
+        await ForceSaveObjectData("inventory", item);
     }
 
     #region LIST
@@ -115,10 +115,34 @@ public class CloudSaveManager : MonoBehaviour
     }
 
     //Force saving objects in player data. Use example: Saving players inventory 
-    private async Task<string> ForceSaveObjectData(string key, NetworkItem value)
+    private async Task<string> ForceSaveObjectData(string key, NetworkItem newItem)
     {
         try
         {
+            
+            //Load current inventory
+            List<NetworkItem> value = await RetrieveSpecificData<List<NetworkItem>>(key);
+            
+            if(value != null)
+            {
+                //If the loaded inventory already has the new item
+                if(value.Contains(newItem))
+                {
+                    
+                    int i = value.FindIndex(item => item.ItemID == newItem.ItemID); //Find the index
+                    NetworkItem item = value[i]; //Why we do this: https://discussions.unity.com/t/cs1612-cannot-modify-the-return-value-of-because-it-is-not-variable/871674/2
+                    item.Amount += newItem.Amount; 
+                    value[i] = item;
+                }
+                else value.Add(newItem); //If is not in the inventory we symply add it
+            }
+            else
+            {
+                value = new List<NetworkItem>();
+                value.Add(newItem);
+            }
+
+            
             // Although we are only saving a single value here, you can save multiple keys
             // and values in a single batch.
             Dictionary<string, object> oneElement = new Dictionary<string, object>
