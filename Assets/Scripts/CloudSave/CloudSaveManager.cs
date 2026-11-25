@@ -7,20 +7,19 @@ using UnityEngine;
 
 public class CloudSaveManager : MonoBehaviour
 {
+    public static CloudSaveManager Instance { get; private set; }
+    private const string InventoryKey = "inventory";
+    private string currentInventoryWriteLock = null;
 
-    void OnEnable()
+    private void Awake()
     {
-        EventManager.OnItemPickUp += SaveItem;
-    }
-
-    void OnDisable()
-    {
-        EventManager.OnItemPickUp -= SaveItem;
-    }
-
-    private async void SaveItem(NetworkItem item)
-    {
-        await ForceSaveObjectData("inventory", item);
+        if (Instance != null && Instance != this)
+        {
+            Destroy(gameObject);
+            return;
+        }
+        Instance = this;
+        DontDestroyOnLoad(this);
     }
 
     #region LIST
@@ -114,26 +113,27 @@ public class CloudSaveManager : MonoBehaviour
         }
     }
 
-    //Force saving objects in player data. Use example: Saving players inventory 
+    //Force saving one item in player data. Use example: Saving a single item 
     private async Task<string> ForceSaveObjectData(string key, NetworkItem newItem)
     {
         try
         {
-            
             //Load current inventory
             List<NetworkItem> value = await RetrieveSpecificData<List<NetworkItem>>(key);
-            
+
             if(value != null)
             {
                 //If the loaded inventory already has the new item
-                if(value.Contains(newItem))
-                {
                     
-                    int i = value.FindIndex(item => item.ItemID == newItem.ItemID); //Find the index
+                int i = value.FindIndex(item => item.ItemID == newItem.ItemID); //Find the index
+                if(i != -1)
+                {
                     NetworkItem item = value[i]; //Why we do this: https://discussions.unity.com/t/cs1612-cannot-modify-the-return-value-of-because-it-is-not-variable/871674/2
                     item.Amount += newItem.Amount; 
                     value[i] = item;
                 }
+                
+                
                 else value.Add(newItem); //If is not in the inventory we symply add it
             }
             else
@@ -174,27 +174,25 @@ public class CloudSaveManager : MonoBehaviour
         return null;
     }
 
-    //Save/Updates player object data by using a writelock for security purposes
-    private async Task<string> SaveObjectData(string key, SampleObject value, string writeLock)
+
+    private async Task<string> ForceSaveInventoryData(string key, List<NetworkItem> inventory)
     {
         try
         {
-            // Although we are only saving a single value here, you can save multiple keys
-            // and values in a single batch.
-            // Use SaveItem to specify a write lock. The request will fail if the provided write lock
-            // does not match the one currently saved on the server.
-            Dictionary<string, SaveItem> oneElement = new Dictionary<string, SaveItem>
+            
+
+            Dictionary<string, object> oneElement = new Dictionary<string, object>
             {
-                { key, new SaveItem(value, writeLock) }
+                { key, inventory }
             };
 
-            // Saving data with write lock validation by using a SaveItem with the write lock specified
+            // Saving data without write lock validation by passing the data as an object instead of a SaveItem
             Dictionary<string, string> result = await CloudSaveService.Instance.Data.Player.SaveAsync(oneElement);
-            string newWriteLock = result[key];
+            string writeLock = result[key];
 
-            Debug.Log($"Successfully saved {key}:{value} with updated write lock {newWriteLock}");
+            Debug.Log($"Successfully saved {key}:{inventory} with updated write lock {writeLock}");
 
-            return newWriteLock;
+            return writeLock;
         }
         catch (CloudSaveValidationException e)
         {
@@ -212,6 +210,36 @@ public class CloudSaveManager : MonoBehaviour
         return null;
     }
 
+    public async Task<bool> SaveInventoryAsync(List<NetworkItem> inventory)
+    {
+        try
+        {
+            var dataToSave = new Dictionary<string, SaveItem>
+            {
+                { InventoryKey, new SaveItem(inventory, currentInventoryWriteLock) }
+            };
+
+            Dictionary<string, string> result = await CloudSaveService.Instance.Data.Player.SaveAsync(dataToSave);
+            currentInventoryWriteLock = result[InventoryKey];
+
+            Debug.Log($"Inventory saved ({inventory.Count} stacks). New writeLock: {currentInventoryWriteLock}");
+            return true;
+        }
+        catch (CloudSaveValidationException e)
+        {
+            Debug.LogWarning($"WriteLock conflict or validation saving inventory: {e.Message}");
+        }
+        catch (CloudSaveRateLimitedException e)
+        {
+            Debug.LogWarning($"Rate limit reached in Cloud Save: {e.Message}");
+        }
+        catch (CloudSaveException e)
+        {
+            Debug.LogError($"Cloud save error: {e}");
+        }
+
+        return false;
+    }
     #endregion
 
     #region LOAD DATA
@@ -245,6 +273,28 @@ public class CloudSaveManager : MonoBehaviour
         }
 
         return default;
+    }
+
+    public async Task<List<NetworkItem>> LoadInventoryAsync()
+    {
+        try
+        {
+            var results = await CloudSaveService.Instance.Data.Player.LoadAsync(
+                new HashSet<string> { InventoryKey }
+            );
+
+            if (results.TryGetValue(InventoryKey, out Item item))
+            {
+                currentInventoryWriteLock = item.WriteLock;
+                return item.Value.GetAs<List<NetworkItem>>() ?? new List<NetworkItem>();
+            }
+        }
+        catch (Exception e)
+        {
+            Debug.LogError($"Error loading inventory: {e}");
+        }
+
+        return new List<NetworkItem>();
     }
 
     //Loads all keys and values from player data

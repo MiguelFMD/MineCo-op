@@ -7,10 +7,18 @@ public class CollectableItemComponent : NetworkBehaviour
     [SerializeField] private int amount;
     private Collider colliderComponent;
 
+#if UNITY_EDITOR
+    // Runs in the Editor whenever a value changes in the Inspector
+    private void OnValidate()
+    {
+        AssignData();
+    }
+#endif
+
     public override void OnNetworkSpawn()
     {
         base.OnNetworkSpawn();
-        AssignData();
+        
         colliderComponent.isTrigger = true;
     }
     public override void OnNetworkDespawn()

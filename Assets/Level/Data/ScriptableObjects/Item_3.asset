@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 925ba24141699624e8fe036f63dca0a8, type: 3}
   m_Name: Item_3
   m_EditorClassIdentifier: Assembly-CSharp::ItemData
-  ItemID: 4
+  ItemID: 3
   ItemName: Objecto_1
   mesh: {fileID: 7535803439391131454, guid: c6a55ba99e9e99d41b7eef123e311a43, type: 3}
   material: {fileID: 2100000, guid: ff188f58422043f489060e28a5e4e0c0, type: 2}
