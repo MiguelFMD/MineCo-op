@@ -22,7 +22,7 @@ public class CloudSaveManager : MonoBehaviour
         DontDestroyOnLoad(this);
     }
 
-    #region LIST
+    #region READ DATA
     //List all player data keys
     private async Task ListAllKeys()
     {
@@ -113,103 +113,6 @@ public class CloudSaveManager : MonoBehaviour
         }
     }
 
-    //Force saving one item in player data. Use example: Saving a single item 
-    private async Task<string> ForceSaveObjectData(string key, NetworkItem newItem)
-    {
-        try
-        {
-            //Load current inventory
-            List<NetworkItem> value = await RetrieveSpecificData<List<NetworkItem>>(key);
-
-            if(value != null)
-            {
-                //If the loaded inventory already has the new item
-                    
-                int i = value.FindIndex(item => item.ItemID == newItem.ItemID); //Find the index
-                if(i != -1)
-                {
-                    NetworkItem item = value[i]; //Why we do this: https://discussions.unity.com/t/cs1612-cannot-modify-the-return-value-of-because-it-is-not-variable/871674/2
-                    item.Amount += newItem.Amount; 
-                    value[i] = item;
-                }
-                
-                
-                else value.Add(newItem); //If is not in the inventory we symply add it
-            }
-            else
-            {
-                value = new List<NetworkItem>();
-                value.Add(newItem);
-            }
-
-            
-            // Although we are only saving a single value here, you can save multiple keys
-            // and values in a single batch.
-            Dictionary<string, object> oneElement = new Dictionary<string, object>
-            {
-                { key, value }
-            };
-
-            // Saving data without write lock validation by passing the data as an object instead of a SaveItem
-            Dictionary<string, string> result = await CloudSaveService.Instance.Data.Player.SaveAsync(oneElement);
-            string writeLock = result[key];
-
-            Debug.Log($"Successfully saved {key}:{value} with updated write lock {writeLock}");
-
-            return writeLock;
-        }
-        catch (CloudSaveValidationException e)
-        {
-            Debug.LogError(e);
-        }
-        catch (CloudSaveRateLimitedException e)
-        {
-            Debug.LogError(e);
-        }
-        catch (CloudSaveException e)
-        {
-            Debug.LogError(e);
-        }
-
-        return null;
-    }
-
-
-    private async Task<string> ForceSaveInventoryData(string key, List<NetworkItem> inventory)
-    {
-        try
-        {
-            
-
-            Dictionary<string, object> oneElement = new Dictionary<string, object>
-            {
-                { key, inventory }
-            };
-
-            // Saving data without write lock validation by passing the data as an object instead of a SaveItem
-            Dictionary<string, string> result = await CloudSaveService.Instance.Data.Player.SaveAsync(oneElement);
-            string writeLock = result[key];
-
-            Debug.Log($"Successfully saved {key}:{inventory} with updated write lock {writeLock}");
-
-            return writeLock;
-        }
-        catch (CloudSaveValidationException e)
-        {
-            Debug.LogError(e);
-        }
-        catch (CloudSaveRateLimitedException e)
-        {
-            Debug.LogError(e);
-        }
-        catch (CloudSaveException e)
-        {
-            Debug.LogError(e);
-        }
-
-        return null;
-    }
-
     public async Task<bool> SaveInventoryAsync(List<NetworkItem> inventory)
     {
         try
@@ -244,37 +147,6 @@ public class CloudSaveManager : MonoBehaviour
 
     #region LOAD DATA
     //Loads from player data and deserialize it transforming it into <T>
-    private async Task<T> RetrieveSpecificData<T>(string key)
-    {
-        try
-        {
-            var results = await CloudSaveService.Instance.Data.Player.LoadAsync(new HashSet<string> {key});
-
-            if (results.TryGetValue(key, out var item))
-            {
-                return item.Value.GetAs<T>();
-            }
-            else
-            {
-                Debug.Log($"There is no such key as {key}!");
-            }
-        }
-        catch (CloudSaveValidationException e)
-        {
-            Debug.LogError(e);
-        }
-        catch (CloudSaveRateLimitedException e)
-        {
-            Debug.LogError(e);
-        }
-        catch (CloudSaveException e)
-        {
-            Debug.LogError(e);
-        }
-
-        return default;
-    }
-
     public async Task<List<NetworkItem>> LoadInventoryAsync()
     {
         try

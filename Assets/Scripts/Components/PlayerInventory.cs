@@ -36,7 +36,7 @@ public class PlayerInventory : NetworkBehaviour
         // 2. Listen applied changes
         Inventory.OnListChanged += HandleInventoryChanged;
 
-        // 3. Arrancar el autoguardado periódico
+        // 3. Auto save 
         StartCoroutine(SaveInventoryCoroutine());
     }
 
@@ -161,7 +161,6 @@ public class PlayerInventory : NetworkBehaviour
             Debug.Log($"I have {networkItem.Amount} of {itemData.ItemName}");
         }
     }
-
 
     private ItemData GetItemDataByID(uint id)
     {
