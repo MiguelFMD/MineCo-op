@@ -13,6 +13,7 @@ public class AnalyticsConsentManager : MonoBehaviour
     [SerializeField] private GameObject consentPanel;
     [SerializeField] private Button acceptButton;
     [SerializeField] private Button declineButton;
+    [SerializeField] private GameObject initButtons;
 
     public bool IsCollectionEnabled =>
         EndUserConsent.GetConsentState().AnalyticsIntent == ConsentStatus.Granted;
@@ -55,7 +56,11 @@ public class AnalyticsConsentManager : MonoBehaviour
             else
             {
                 // Consent choice was already persisted from a previous session
-                if (consentPanel != null) consentPanel.SetActive(false);
+                if (consentPanel != null)
+                {
+                    consentPanel.SetActive(false);
+                    initButtons.SetActive(true);
+                }
                 Debug.Log($"[AnalyticsConsent] Restored consent state: {currentConsent.AnalyticsIntent}");
             }
         }
@@ -72,7 +77,11 @@ public class AnalyticsConsentManager : MonoBehaviour
             AnalyticsIntent = ConsentStatus.Granted
         });
 
-        if (consentPanel != null) consentPanel.SetActive(false);
+        if (consentPanel != null)
+        {
+            consentPanel.SetActive(false);
+            initButtons.SetActive(true);
+        }
         Debug.Log("[AnalyticsConsent] Analytics consent granted.");
     }
 
@@ -83,7 +92,11 @@ public class AnalyticsConsentManager : MonoBehaviour
             AnalyticsIntent = ConsentStatus.Denied
         });
 
-        if (consentPanel != null) consentPanel.SetActive(false);
+        if (consentPanel != null)
+        {
+            consentPanel.SetActive(false);
+            initButtons.SetActive(true);
+        }
         Debug.Log("[AnalyticsConsent] Analytics consent denied.");
     }
 
