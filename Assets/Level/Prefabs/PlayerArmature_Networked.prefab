@@ -455,6 +455,8 @@ MonoBehaviour:
       MaxSecondsBetweenUpdates: 0
   itemDatabase:
   - {fileID: 11400000, guid: a6db01e1232b4ba47bce634cde9f3738, type: 2}
+  - {fileID: 11400000, guid: 3dfeaf7f8a9d6374684b2232fda9e9f9, type: 2}
+  - {fileID: 11400000, guid: aabb92f0343a03e4791001613c77f6bf, type: 2}
 --- !u!114 &9165924284520693627
 MonoBehaviour:
   m_ObjectHideFlags: 0

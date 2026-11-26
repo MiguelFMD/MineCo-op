@@ -2,7 +2,6 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Unity.Netcode;
-using Unity.Services.Matchmaker.Models;
 using UnityEngine;
 
 public class PlayerInventory : NetworkBehaviour
@@ -25,6 +24,13 @@ public class PlayerInventory : NetworkBehaviour
     {
         // Only owner manages its own Cloud Save
         if (!IsOwner) return;
+
+        //----------NEW-----------------
+        if (AnalyticsManager.Instance != null)
+        {
+            AnalyticsManager.Instance.RecordMatchJoined(IsHost);
+        }
+        //--------------------------------
 
         // 1. Load saved inventory
         List<NetworkItem> savedItems = await CloudSaveManager.Instance.LoadInventoryAsync();
@@ -51,6 +57,34 @@ public class PlayerInventory : NetworkBehaviour
     private void HandleInventoryChanged(NetworkListEvent<NetworkItem> changeEvent)
     {
         isDirty = true;
+        if (AnalyticsManager.Instance == null) return;
+
+        if (changeEvent.Type == NetworkListEvent<NetworkItem>.EventType.Add)
+        {
+            ItemData data = GetItemDataByID(changeEvent.Value.ItemID);
+            string itemName = data != null ? data.ItemName : $"Item_{changeEvent.Value.ItemID}";
+            AnalyticsManager.Instance.RecordItemCollected(
+                changeEvent.Value.ItemID,
+                itemName,
+                changeEvent.Value.Amount,
+                transform.position
+            );
+        }
+        else if (changeEvent.Type == NetworkListEvent<NetworkItem>.EventType.Value)
+        {
+            int delta = changeEvent.Value.Amount - changeEvent.PreviousValue.Amount;
+            if (delta > 0)
+            {
+                ItemData data = GetItemDataByID(changeEvent.Value.ItemID);
+                string itemName = data != null ? data.ItemName : $"Item_{changeEvent.Value.ItemID}";
+                AnalyticsManager.Instance.RecordItemCollected(
+                    changeEvent.Value.ItemID,
+                    itemName,
+                    delta,
+                    transform.position
+                );
+            }
+        }
     }
 
     [Rpc(SendTo.Server)]

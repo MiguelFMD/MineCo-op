@@ -1,5 +1,6 @@
 using System;
 using System.Threading.Tasks;
+using Unity.Services.Authentication;
 using Unity.Services.Core;
 using UnityEngine;
 using UnityEngine.UI;
@@ -44,6 +45,10 @@ public class AnalyticsConsentManager : MonoBehaviour
             if (UnityServices.State != ServicesInitializationState.Initialized)
             {
                 await UnityServices.InitializeAsync();
+                if (!AuthenticationService.Instance.IsSignedIn)
+                {
+                    await AuthenticationService.Instance.SignInAnonymouslyAsync();
+                }
             }
 
             ConsentState currentConsent = EndUserConsent.GetConsentState();

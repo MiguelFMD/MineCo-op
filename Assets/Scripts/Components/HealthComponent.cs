@@ -26,6 +26,14 @@ public class HealthComponent : NetworkBehaviour
         if(newValue <= 0 && oldValue > 0)
         {
             EventManager.OnPlayerDied?.Invoke(NetworkObjectId);
+
+            //------------------NEW-----------------
+            if (AnalyticsManager.Instance != null)
+            {
+                int itemStacks = TryGetComponent(out PlayerInventory inv) ? inv.Inventory.Count : 0;
+                AnalyticsManager.Instance.RecordPlayerDied(itemStacks, transform.position);
+            }
+            //----------------------------------
         }
         EventManager.OnHealthChanged?.Invoke(NetworkObjectId, currentHealth.Value, maxHealth);
     }
@@ -43,6 +51,5 @@ public class HealthComponent : NetworkBehaviour
     private void ChangeHealthServerRpc(float points)
     {
         currentHealth.Value = Math.Clamp(currentHealth.Value + points, 0, maxHealth);
-        print(this.name + "se quita vida");
     }
 }

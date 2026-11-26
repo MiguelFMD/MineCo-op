@@ -26,6 +26,3 @@ necesitamos crear antes un report, vamos a crear dos:
 
     - 5.1 funnel report: https://docs.unity.com/en-us/analytics/funnels/create-funnels
     - 5.2 data explorer: https://docs.unity.com/en-us/analytics/data-explorer/data-explorer
-
-
-no se si me falta algo mas??

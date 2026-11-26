@@ -82,7 +82,6 @@ public class PooledDynamicSpawner : NetworkBehaviour, INetworkPrefabInstanceHand
     public void SpawnBullet(Vector3 position, Quaternion rotation)
     {
         if (!IsServer) return;
-        print("disparo");
         NetworkObject bullet = GetFromPool();
         
         bullet.transform.SetPositionAndRotation(position, rotation);

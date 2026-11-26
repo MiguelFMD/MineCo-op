@@ -20,7 +20,6 @@ public class TriggerDamageComponent : NetworkBehaviour
         if(!IsClient) return;
         if(other.TryGetComponent(out NetworkObject networkObject))
         {
-            print("Se chocado: " + networkObject.name);
             damagerComponent.Damage(networkObject);
         }
     }
